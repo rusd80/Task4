@@ -13,10 +13,8 @@ import (
 const botToken = "2144052527:AAELCMqXtbt9jKclUWVZjABPE2cAuk9Ko7A"
 
 func webHookHandler(rw http.ResponseWriter, req *http.Request) {
-
 	// Create our web hook request body type instance
 	body := &webHookReqBody{}
-
 	// Decodes the incoming request into our cutom webhookreqbody type
 	if err := json.NewDecoder(req.Body).Decode(body); err != nil {
 		log.Printf("An error occured (webHookHandler)")
@@ -33,7 +31,6 @@ func webHookHandler(rw http.ResponseWriter, req *http.Request) {
 		}
 	}
 }
-
 
 type webHookReqBody struct {
 	Message struct {
