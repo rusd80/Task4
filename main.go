@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
-
-const botToken = "2144052527:AAELCMqXtbt9jKclUWVZjABPE2cAuk9Ko7A"
 
 func webHookHandler(rw http.ResponseWriter, req *http.Request) {
 	// Create our web hook request body type instance
@@ -43,13 +43,11 @@ type webHookReqBody struct {
 
 func sendReply(chatID int64) error {
 	fmt.Println("sendReply called")
-
 	// calls the joke fetcher fucntion and gets a random joke from the API
 	text, err := jokeFetcher()
 	if err != nil {
 		return err
 	}
-
 	//Creates an instance of our custom sendMessageReqBody Type
 	reqBody := &sendMessageReqBody{
 		ChatID: chatID,
@@ -97,12 +95,15 @@ type sendMessageReqBody struct {
 	Text   string `json:"text"`
 }
 
+var botToken string
+
 func main() {
+	godotenv.Load(".env")
+	botToken = os.Getenv("TOKEN")
+	fmt.Println(botToken)
 	err := http.ListenAndServe(":8090", http.HandlerFunc(webHookHandler))
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	fmt.Println("hello world. its my first go project")
-	fmt.Println(botToken)
 }
