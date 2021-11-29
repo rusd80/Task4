@@ -40,9 +40,10 @@ func webHookHandler(rw http.ResponseWriter, req *http.Request) {
 		log.Panic(err)
 		return
 	}
-
+	// strings.HasPrefix("my string", "my")
 	// If the command /tasks is received call the sendReply function
-	if strings.ToLower(body.Message.Text) == "/tasks" {
+	botMessage := strings.ToLower(body.Message.Text)
+	if botMessage == "/tasks" || strings.HasPrefix(botMessage, "/task") {
 		err := sendReply(body.Message.Chat.ID, body.Message.Text)
 		if err != nil {
 			log.Panic(err)
@@ -141,6 +142,7 @@ func commandHandler(command string) (string, error) {
 // Get_task_url retrieves a URL for a passed task.
 func getTaskUrl(taskNum string) string {
 	var url string
+	fmt.Println(taskNum)
 	taskName := fmt.Sprintf("Homework_%s", taskNum)
 
 	for i := range taskList {
